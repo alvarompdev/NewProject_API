@@ -1,0 +1,16 @@
+# Java
+/target/
+*.class
+*.jar
+*.war
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Docker
+/db_data/
