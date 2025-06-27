@@ -34,6 +34,16 @@ public class Product {
     private Double salt;
     private Double sodium;
 
+    private String nutriScore;
+
+    public String getNutriScore() {
+        return nutriScore;
+    }
+
+    public void setNutriScore(String nutriScore) {
+        this.nutriScore = nutriScore;
+    }
+
     // ======================
     // Getters y Setters
     // ======================
