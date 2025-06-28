@@ -30,6 +30,9 @@ public class Product {
     @Column(length = 1024)
     private String imageUrl;
 
+    @Column(length = 10)
+    private String quantity;
+
     @Column(length = 2000)
     private String ingredients;
 
@@ -46,6 +49,14 @@ public class Product {
     private Double salt;
     private Double sodium;
     private String nutriScore;
+
+    private Integer novaGroup;
+    @Column(length = 255)
+    private String novaGroupDebug;
+
+    private Integer ecoscoreScore;
+    @Column(length = 255)
+    private String ecoscoreGrade;
 
     /*
      * Getters y Setters
@@ -88,6 +99,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getIngredients() {
@@ -178,4 +197,35 @@ public class Product {
         this.nutriScore = nutriScore;
     }
 
+    public Integer getNovaGroup() {
+        return novaGroup;
+    }
+
+    public void setNovaGroup(Integer novaGroup) {
+        this.novaGroup = novaGroup;
+    }
+
+    public String getNovaGroupDebug() {
+        return novaGroupDebug;
+    }
+
+    public void setNovaGroupDebug(String novaGroupDebug) {
+        this.novaGroupDebug = novaGroupDebug;
+    }
+
+    public Integer getEcoscoreScore() {
+        return ecoscoreScore;
+    }
+
+    public void setEcoscoreScore(Integer ecoscoreScore) {
+        this.ecoscoreScore = ecoscoreScore;
+    }
+
+    public String getEcoscoreGrade() {
+        return ecoscoreGrade;
+    }
+
+    public void setEcoscoreGrade(String ecoscoreGrade) {
+        this.ecoscoreGrade = ecoscoreGrade;
+    }
 }

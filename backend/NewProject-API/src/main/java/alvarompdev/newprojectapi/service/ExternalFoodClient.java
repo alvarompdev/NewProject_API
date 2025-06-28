@@ -17,10 +17,17 @@ import org.springframework.web.client.RestTemplate;
 public class ExternalFoodClient {
 
     // URL base para acceder a la API de Open Food Facts con campos filtrados
+    /*
     private static final String URL =
             "https://world.openfoodfacts.org/api/v0/product/{barcode}.json" +
-                    "?fields=product_name,brands,image_front_url,nutriments,ingredients_text,nutriscore_grade";
+                    "?fields=product_name,brands,image_front_url,nutriments,ingredients_text,nutriscore_grade,quantity,product_quantity,product_quantity_unit";
+     */
     // Si se quiere añadir algún nuevo campo que se quiere añadir a la petición, se tiene que añadir a esta URL también
+
+    private static final String URL =
+            "https://world.openfoodfacts.org/api/v0/product/{barcode}.json" +
+                    "?fields=product_name,brands,image_front_url,nutriments,ingredients_text,nutriscore_grade,quantity,product_quantity,product_quantity_unit," +
+                    "nova_group,nova_group_debug,ecoscore_score,ecoscore_grade";
 
     private final RestTemplate rest; // Cliente HTTP para realizar peticiones a la API externa
 
