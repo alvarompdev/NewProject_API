@@ -1,6 +1,9 @@
 package alvarompdev.newprojectapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+
+import java.util.List;
 
 /**
  * Representa la información principal del producto recibida desde la API de Open Food Facts
@@ -49,6 +52,15 @@ public class OffProduct {
 
     @JsonProperty("ecoscore_grade")
     private String ecoscoreGrade;
+
+    @JsonProperty("additives_tags")
+    private List<String> additivesTags;
+
+    @JsonProperty("additives_original_tags")
+    private List<String> additivesOriginalTags;
+
+    @JsonProperty("ingredients_analysis_tags")
+    private List<String> ingredientsAnalysisTags;
 
     /**
      * Getters y Setters
@@ -155,6 +167,30 @@ public class OffProduct {
 
     public void setEcoscoreGrade(String ecoscoreGrade) {
         this.ecoscoreGrade = ecoscoreGrade;
+    }
+
+    public List<String> getAdditivesTags() {
+        return additivesTags;
+    }
+
+    public void setAdditivesTags(List<String> additivesTags) {
+        this.additivesTags = additivesTags;
+    }
+
+    public List<String> getAdditivesOriginalTags() {
+        return additivesOriginalTags;
+    }
+
+    public void setAdditivesOriginalTags(List<String> additivesOriginalTags) {
+        this.additivesOriginalTags = additivesOriginalTags;
+    }
+
+    public List<String> getIngredientsAnalysisTags() {
+        return ingredientsAnalysisTags;
+    }
+
+    public void setIngredientsAnalysisTags(List<String> ingredientsAnalysisTags) {
+        this.ingredientsAnalysisTags = ingredientsAnalysisTags;
     }
 
     public String getNormalizedQuantity() {

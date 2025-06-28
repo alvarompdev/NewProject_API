@@ -5,8 +5,12 @@ import alvarompdev.newprojectapi.dto.OffProduct;
 import alvarompdev.newprojectapi.dto.OffNutriments;
 import alvarompdev.newprojectapi.entity.Product;
 import alvarompdev.newprojectapi.repository.ProductRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Servicio para gestionar productos
@@ -15,68 +19,56 @@ import org.springframework.transaction.annotation.Transactional;
  * - Si no encuentra el producto, consulta la API externa de Open Food Facts
  * - Si encuentra el producto, pero le falta información, actualiza los datos
  *
- * @author Álvaro Muñoz Panadero - alvarompdev on GitHub - alvaromp.dev@gmail.com
+ * @author Álvaro Muñoz Panadero
  */
 @Service
 public class ProductService {
 
-    private final ProductRepository repo; // Repositorio JPA para acceder a los productos en la base de datos
-    private final ExternalFoodClient external; // Cliente para acceder a la API externa de Open Food Facts
+    private final ProductRepository repo;
+    private final ExternalFoodClient external;
+    private final ObjectMapper mapper;
 
-    /**
-     * Constructor del servicio que inyecta el repositorio y el cliente externo
-     *
-     * @param repo Repositorio JPA para productos
-     * @param external Cliente para acceder a la API externa de Open Food Facts
-     */
-    public ProductService(ProductRepository repo, ExternalFoodClient external) {
+    public ProductService(ProductRepository repo, ExternalFoodClient external, ObjectMapper mapper) {
         this.repo = repo;
         this.external = external;
+        this.mapper = mapper;
     }
 
     /**
-     * Obtiene un producto por su código de barras
-     *
-     * @param barcode Código de barras del producto a buscar
-     * @return Product objeto que contiene la información del producto
+     * Obtiene un producto por su código de barras (entidad Product)
      */
     @Transactional
     public Product getOrFetch(String barcode) {
         return repo.findByBarcode(barcode)
                 .map(existing -> {
-                    // Se verifica si necesitamos actualizar algunos de los datos que antes eran null pero que ahora sí que tenemos
-                    // Si una de todas las variables es null, entonces ya esta variable será null por lo que se sobreescribirán todos los datos,
-                    // actualizándose así de esta manera
                     boolean needsUpdate =
-                            // Datos del producto
                             existing.getName() == null ||
-                            existing.getBrand() == null ||
-                            existing.getImageUrl() == null ||
-                            existing.getQuantity() == null ||
-                            existing.getIngredients() == null ||
-                            existing.getNutriScore() == null ||
-                            existing.getNovaGroup() == null ||
-                            existing.getNovaGroupDebug() == null ||
-                            existing.getEcoscoreScore() == null ||
-                            existing.getEcoscoreGrade() == null ||
+                                    existing.getBrand() == null ||
+                                    existing.getImageUrl() == null ||
+                                    existing.getQuantity() == null ||
+                                    existing.getIngredients() == null ||
+                                    existing.getNutriScore() == null ||
+                                    existing.getNovaGroup() == null ||
+                                    existing.getNovaGroupDebug() == null ||
+                                    existing.getEcoscoreScore() == null ||
+                                    existing.getEcoscoreGrade() == null ||
+                                    existing.getAdditivesTags() == null ||
+                                    existing.getAdditivesOriginalTags() == null ||
+                                    existing.getIngredientsAnalysisTags() == null ||
 
-                            // Datos nutricionales del producto
-                            existing.getEnergyKcal() == null ||
-                            existing.getProtein() == null ||
-                            existing.getFat() == null ||
-                            existing.getCarbs() == null ||
-                            existing.getSugars() == null ||
-                            existing.getSaturatedFat() == null ||
-                            existing.getFiber() == null ||
-                            existing.getSalt() == null ||
-                            existing.getSodium() == null;
+                                    existing.getEnergyKcal() == null ||
+                                    existing.getProtein() == null ||
+                                    existing.getFat() == null ||
+                                    existing.getCarbs() == null ||
+                                    existing.getSugars() == null ||
+                                    existing.getSaturatedFat() == null ||
+                                    existing.getFiber() == null ||
+                                    existing.getSalt() == null ||
+                                    existing.getSodium() == null;
 
-                    if (needsUpdate) { // Si necesita actualizar alguno de los datos (algún dato era null pero ahora sí que tenemos datos para ese campo)
-                        OffProduct off = external.fetchByBarcode(barcode); // Se consulta la API externa de Open Food Facts para obtener los datos del producto
-                        if (off != null) { // Si existe el producto en la API externa
-                            System.out.println("Actualizando datos del producto con código: " + barcode); // Debug
-
-                            // Se actualizan los datos del producto con los datos obtenidos de la API externa
+                    if (needsUpdate) {
+                        OffProduct off = external.fetchByBarcode(barcode);
+                        if (off != null) {
                             if (existing.getName() == null) existing.setName(off.getProductName());
                             if (existing.getBrand() == null) existing.setBrand(off.getBrands());
                             if (existing.getImageUrl() == null) existing.setImageUrl(off.getImageUrl());
@@ -88,9 +80,30 @@ public class ProductService {
                             if (existing.getEcoscoreScore() == null) existing.setEcoscoreScore(off.getEcoscoreScore());
                             if (existing.getEcoscoreGrade() == null) existing.setEcoscoreGrade(off.getEcoscoreGrade());
 
-                            OffNutriments n = off.getNutriments(); // Se obtienen los datos nutricionales del producto
-                            if (n != null) { // Si existen los datos nutricionales
-                                // Se actualizan los datos nutricionales del producto con los datos obtenidos de la API externa
+                            if (existing.getAdditivesTags() == null && off.getAdditivesTags() != null) {
+                                try {
+                                    existing.setAdditivesTags(mapper.writeValueAsString(off.getAdditivesTags()));
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            if (existing.getAdditivesOriginalTags() == null && off.getAdditivesOriginalTags() != null) {
+                                try {
+                                    existing.setAdditivesOriginalTags(mapper.writeValueAsString(off.getAdditivesOriginalTags()));
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            if (existing.getIngredientsAnalysisTags() == null && off.getIngredientsAnalysisTags() != null) {
+                                try {
+                                    existing.setIngredientsAnalysisTags(mapper.writeValueAsString(off.getIngredientsAnalysisTags()));
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
+                            OffNutriments n = off.getNutriments();
+                            if (n != null) {
                                 if (existing.getEnergyKcal() == null) existing.setEnergyKcal(n.getEnergyKcalPer100g());
                                 if (existing.getProtein() == null) existing.setProtein(n.getProteinsPer100g());
                                 if (existing.getFat() == null) existing.setFat(n.getFatPer100g());
@@ -102,20 +115,18 @@ public class ProductService {
                                 if (existing.getSodium() == null) existing.setSodium(n.getSodiumPer100g());
                             }
 
-                            return repo.save(existing); // Se guarda el producto actualizado en la base de datos
+                            return repo.save(existing);
                         }
                     }
-
-                    return existing; // Si no necesita actualizar ningún dato, se devuelve el producto existente tal cual
+                    return existing;
                 })
-                .orElseGet(() -> { // Si no existe el producto en la base de datos, se consulta la API externa
-                    OffProduct off = external.fetchByBarcode(barcode); // Se obtiene el producto de la API externa
-                    if (off == null) { // Si no se encuentra el producto en la API externa, se lanza una excepción
-                        throw new ProductNotFoundException(barcode); // Se lanza la excepción personalizada
+                .orElseGet(() -> {
+                    OffProduct off = external.fetchByBarcode(barcode);
+                    if (off == null) {
+                        throw new ProductNotFoundException(barcode);
                     }
 
-                    Product p = new Product(); // Se crea un nuevo objeto Product para guardar los datos obtenidos de la API externa
-                    // Se asignan los datos del producto obtenido de la API externa al nuevo objeto Product
+                    Product p = new Product();
                     p.setBarcode(barcode);
                     p.setName(off.getProductName());
                     p.setBrand(off.getBrands());
@@ -128,7 +139,29 @@ public class ProductService {
                     p.setEcoscoreScore(off.getEcoscoreScore());
                     p.setEcoscoreGrade(off.getEcoscoreGrade());
 
-                    OffNutriments n = off.getNutriments(); // Se obtienen los datos nutricionales del producto
+                    if (off.getAdditivesTags() != null) {
+                        try {
+                            p.setAdditivesTags(mapper.writeValueAsString(off.getAdditivesTags()));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    if (off.getAdditivesOriginalTags() != null) {
+                        try {
+                            p.setAdditivesOriginalTags(mapper.writeValueAsString(off.getAdditivesOriginalTags()));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    if (off.getIngredientsAnalysisTags() != null) {
+                        try {
+                            p.setIngredientsAnalysisTags(mapper.writeValueAsString(off.getIngredientsAnalysisTags()));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    OffNutriments n = off.getNutriments();
                     if (n != null) {
                         p.setEnergyKcal(n.getEnergyKcalPer100g());
                         p.setProtein(n.getProteinsPer100g());
@@ -141,8 +174,59 @@ public class ProductService {
                         p.setSodium(n.getSodiumPer100g());
                     }
 
-                    return repo.save(p); // Se guarda el nuevo producto en la base de datos y se devuelve
+                    return repo.save(p);
                 });
+    }
+
+    /**
+     * Convierte la entidad Product a un DTO OffProduct, parseando los JSON en String a listas
+     */
+    public OffProduct convertToDto(Product product) {
+        OffProduct dto = new OffProduct();
+
+        // dto.setBarcode(product.getBarcode());
+        dto.setProductName(product.getName());
+        dto.setBrands(product.getBrand());
+        dto.setImageUrl(product.getImageUrl());
+        dto.setQuantity(product.getQuantity());
+        dto.setIngredients(product.getIngredients());
+        dto.setNutriscoreGrade(product.getNutriScore());
+        dto.setNovaGroup(product.getNovaGroup());
+        dto.setNovaGroupDebug(product.getNovaGroupDebug());
+        dto.setEcoscoreScore(product.getEcoscoreScore());
+        dto.setEcoscoreGrade(product.getEcoscoreGrade());
+
+        try {
+            if (product.getAdditivesTags() != null) {
+                List<String> additivesTags = mapper.readValue(product.getAdditivesTags(), List.class);
+                dto.setAdditivesTags(additivesTags);
+            }
+            if (product.getAdditivesOriginalTags() != null) {
+                List<String> additivesOriginalTags = mapper.readValue(product.getAdditivesOriginalTags(), List.class);
+                dto.setAdditivesOriginalTags(additivesOriginalTags);
+            }
+            if (product.getIngredientsAnalysisTags() != null) {
+                List<String> ingredientsAnalysisTags = mapper.readValue(product.getIngredientsAnalysisTags(), List.class);
+                dto.setIngredientsAnalysisTags(ingredientsAnalysisTags);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error parsing JSON tags", e);
+        }
+
+        OffNutriments nutriments = new OffNutriments();
+        nutriments.setEnergyKcalPer100g(product.getEnergyKcal());
+        nutriments.setProteinsPer100g(product.getProtein());
+        nutriments.setFatPer100g(product.getFat());
+        nutriments.setCarbsPer100g(product.getCarbs());
+        nutriments.setSugarsPer100g(product.getSugars());
+        nutriments.setSaturatedFatPer100g(product.getSaturatedFat());
+        nutriments.setFiberPer100g(product.getFiber());
+        nutriments.setSaltPer100g(product.getSalt());
+        nutriments.setSodiumPer100g(product.getSodium());
+
+        dto.setNutriments(nutriments);
+
+        return dto;
     }
 
 }
