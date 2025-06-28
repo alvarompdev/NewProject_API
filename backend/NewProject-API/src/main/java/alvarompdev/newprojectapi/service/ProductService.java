@@ -52,8 +52,13 @@ public class ProductService {
                             existing.getName() == null ||
                             existing.getBrand() == null ||
                             existing.getImageUrl() == null ||
+                            existing.getQuantity() == null ||
                             existing.getIngredients() == null ||
                             existing.getNutriScore() == null ||
+                            existing.getNovaGroup() == null ||
+                            existing.getNovaGroupDebug() == null ||
+                            existing.getEcoscoreScore() == null ||
+                            existing.getEcoscoreGrade() == null ||
 
                             // Datos nutricionales del producto
                             existing.getEnergyKcal() == null ||
@@ -75,8 +80,13 @@ public class ProductService {
                             if (existing.getName() == null) existing.setName(off.getProductName());
                             if (existing.getBrand() == null) existing.setBrand(off.getBrands());
                             if (existing.getImageUrl() == null) existing.setImageUrl(off.getImageUrl());
+                            if (existing.getQuantity() == null) existing.setQuantity(off.getNormalizedQuantity());
                             if (existing.getIngredients() == null) existing.setIngredients(off.getIngredients());
                             if (existing.getNutriScore() == null) existing.setNutriScore(off.getNutriscoreGrade());
+                            if (existing.getNovaGroup() == null) existing.setNovaGroup(off.getNovaGroup());
+                            if (existing.getNovaGroupDebug() == null) existing.setNovaGroupDebug(off.getNovaGroupDebug());
+                            if (existing.getEcoscoreScore() == null) existing.setEcoscoreScore(off.getEcoscoreScore());
+                            if (existing.getEcoscoreGrade() == null) existing.setEcoscoreGrade(off.getEcoscoreGrade());
 
                             OffNutriments n = off.getNutriments(); // Se obtienen los datos nutricionales del producto
                             if (n != null) { // Si existen los datos nutricionales
@@ -110,8 +120,13 @@ public class ProductService {
                     p.setName(off.getProductName());
                     p.setBrand(off.getBrands());
                     p.setImageUrl(off.getImageUrl());
+                    p.setQuantity(off.getNormalizedQuantity());
                     p.setIngredients(off.getIngredients());
                     p.setNutriScore(off.getNutriscoreGrade());
+                    p.setNovaGroup(off.getNovaGroup());
+                    p.setNovaGroupDebug(off.getNovaGroupDebug());
+                    p.setEcoscoreScore(off.getEcoscoreScore());
+                    p.setEcoscoreGrade(off.getEcoscoreGrade());
 
                     OffNutriments n = off.getNutriments(); // Se obtienen los datos nutricionales del producto
                     if (n != null) {
