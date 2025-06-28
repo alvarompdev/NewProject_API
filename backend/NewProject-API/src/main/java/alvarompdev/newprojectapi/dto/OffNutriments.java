@@ -2,9 +2,20 @@ package alvarompdev.newprojectapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Representa toda la información nutricional del producto
+ * s
+ * Se utiliza para mapear la respuesta de la API de Open Food Facts a nuestras variables Java. Ejemplo:
+ * Open Food Facts devuelve un JSON cuyas calorías se reciben con 'energy-kcal_100g'. Entonces nosotros
+ * establecemos que recibimos ese valor @JsonProperty("energy-kcal_100g") y lo mapeamos a nuestra variable,
+ * que en este caso se llama 'energyKcalPer100g'
+ *
+ * @author Álvaro Muñoz Panadero - alvarompdev on GitHub - alvaromp.dev@gmail.com
+ */
 public class OffNutriments {
-    @JsonProperty("energy-kcal_100g")
-    private Double energyKcalPer100g;
+
+    @JsonProperty("energy-kcal_100g") // Nombre de la propiedad en el JSON de Open Food Facts
+    private Double energyKcalPer100g; // Variable que almacenará las calorías por cada 100 gramos del producto
 
     @JsonProperty("energy-kj_100g")
     private Double energyKjPer100g;
@@ -33,6 +44,9 @@ public class OffNutriments {
     @JsonProperty("sodium_100g")
     private Double sodiumPer100g;
 
+    /*+
+     * Getters y Setters
+     */
     public Double getEnergyKcalPer100g() {
         return energyKcalPer100g;
     }

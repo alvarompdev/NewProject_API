@@ -2,12 +2,22 @@ package alvarompdev.newprojectapi.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad JPA que representa un producto
+ * Contiene todos los datos del producto, tanto los básicos como los nutricionales
+ *
+ * @author Álvaro Muñoz Panadero - alvarompdev on GitHub - alvaromp.dev@gmail.com
+ */
 @Entity
-@Table(name = "products")
+@Table(name = "products") // Nombre de la tabla en la base de datos
 public class Product {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Datos del producto
+     */
     @Column(nullable = false, unique = true)
     private String barcode;
 
@@ -23,7 +33,9 @@ public class Product {
     @Column(length = 2000)
     private String ingredients;
 
-    // Macros por 100g
+    /**
+     * Datos nutricionales del producto
+     */
     private Double energyKcal;
     private Double protein;
     private Double fat;
@@ -33,22 +45,11 @@ public class Product {
     private Double fiber;
     private Double salt;
     private Double sodium;
-
     private String nutriScore;
 
-    public String getNutriScore() {
-        return nutriScore;
-    }
-
-    public void setNutriScore(String nutriScore) {
-        this.nutriScore = nutriScore;
-    }
-
-    // ======================
-    // Getters y Setters
-    // ======================
-
-
+    /*
+     * Getters y Setters
+     */
     public Long getId() {
         return id;
     }
@@ -167,6 +168,14 @@ public class Product {
 
     public void setSodium(Double sodium) {
         this.sodium = sodium;
+    }
+
+    public String getNutriScore() {
+        return nutriScore;
+    }
+
+    public void setNutriScore(String nutriScore) {
+        this.nutriScore = nutriScore;
     }
 
 }
