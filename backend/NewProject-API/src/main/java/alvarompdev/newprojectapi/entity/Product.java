@@ -21,10 +21,10 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String barcode;
 
-    @Column(length = 500)
+    @Column(length = 100)
     private String name;
 
-    @Column(length = 1000)
+    @Column(length = 50)
     private String brand;
 
     @Column(length = 1024)
@@ -51,12 +51,21 @@ public class Product {
     private String nutriScore;
 
     private Integer novaGroup;
-    @Column(length = 255)
+    @Column(length = 1000)
     private String novaGroupDebug;
 
     private Integer ecoscoreScore;
-    @Column(length = 255)
+    @Column(length = 5)
     private String ecoscoreGrade;
+
+    @Column(length = 1000)
+    private String additivesTags;
+
+    @Column(length = 1000)
+    private String additivesOriginalTags;
+
+    @Column(length = 1000)
+    private String ingredientsAnalysisTags;
 
     /*
      * Getters y Setters
@@ -228,4 +237,29 @@ public class Product {
     public void setEcoscoreGrade(String ecoscoreGrade) {
         this.ecoscoreGrade = ecoscoreGrade;
     }
+
+    public String getAdditivesTags() {
+        return additivesTags;
+    }
+
+    public void setAdditivesTags(String additivesTags) {
+        this.additivesTags = additivesTags;
+    }
+
+    public String getAdditivesOriginalTags() {
+        return additivesOriginalTags;
+    }
+
+    public void setAdditivesOriginalTags(String additivesOriginalTags) {
+        this.additivesOriginalTags = additivesOriginalTags;
+    }
+
+    public String getIngredientsAnalysisTags() {
+        return ingredientsAnalysisTags;
+    }
+
+    public void setIngredientsAnalysisTags(String ingredientsAnalysisTags) {
+        this.ingredientsAnalysisTags = ingredientsAnalysisTags;
+    }
+
 }
