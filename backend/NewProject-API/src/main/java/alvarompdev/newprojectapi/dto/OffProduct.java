@@ -2,7 +2,17 @@ package alvarompdev.newprojectapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Representa la información principal del producto recibida desde la API de Open Food Facts
+ *
+ * Se utiliza para mapear la respuesta JSON a variables Java. Por ejemplo:
+ * El JSON de Open Food Facts tiene la propiedad 'product_name', que se asigna aquí
+ * con @JsonProperty("product_name") a la variable 'productName'
+ *
+ * @author Álvaro Muñoz Panadero - alvarompdev on GitHub - alvaromp.dev@gmail.com
+ */
 public class OffProduct {
+
     @JsonProperty("product_name")
     private String productName;
 
@@ -19,6 +29,9 @@ public class OffProduct {
     @JsonProperty("nutriscore_grade")
     private String nutriscoreGrade;
 
+    /**
+     * Getters y Setters
+     */
     public String getProductName() {
         return productName;
     }
@@ -66,4 +79,5 @@ public class OffProduct {
     public void setNutriscoreGrade(String nutriscoreGrade) {
         this.nutriscoreGrade = nutriscoreGrade;
     }
+
 }
