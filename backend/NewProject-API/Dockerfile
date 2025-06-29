@@ -1,13 +1,17 @@
-# Fase de construcción - Usamos imagen de Java 21 + Maven instalado manualmente
-FROM eclipse-temurin:21-jdk-alpine AS builder
+# Fase de construcción
+FROM maven:3.8.7-eclipse-temurin-21-alpine AS builder
+
+# Usa un directorio de trabajo absoluto
 WORKDIR /usr/src/app
 
-# Instala Maven manualmente
-RUN apk add --no-cache maven
-
-COPY pom.xml .
+# Copia solo el POM primero para cachear dependencias
+COPY ./pom.xml .
 RUN mvn dependency:go-offline
-COPY src ./src
+
+# Copia el código fuente
+COPY ./src ./src
+
+# Construye la aplicación
 RUN mvn clean package -DskipTests -Dfile.encoding=UTF-8
 
 # Fase de ejecución
