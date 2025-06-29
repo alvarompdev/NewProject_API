@@ -1,6 +1,10 @@
 # [Nombre del proyecto] - Backend
 
-[Nombre del proyecto] es una API RESTful desarrollada con Java y con el framework Spring Boot. Consiste en una API que consulta APIs externas como Open Food Facts (https://world.openfoodfacts.org/), Open Products Facts (https://world.openproductsfacts.org/) y Open Beauty Facts (https://world.openbeautyfacts.org/).
+**NewProject** es una API RESTful desarrollada con Java y Spring Boot. Permite consultar información sobre productos escaneando su código de barras, accediendo a fuentes abiertas como:
+
+- [Open Food Facts](https://world.openfoodfacts.org/)
+- [Open Products Facts](https://world.openproductsfacts.org/)
+- [Open Beauty Facts](https://world.openbeautyfacts.org/)
 
 ## 📝 Índice
 
@@ -53,29 +57,32 @@
 ## Estructura del proyecto
 
 ```
-backend/
-└── NewProject-Api/
-    ├── src/main/java/alvarompdev/newprojectapi/
-    │   ├── config                 # Elementos de configuración
-    │   │   └── view               # Clase de configuración de Spring
-    │   ├── controller             # Controladores REST
-    │   ├── dto                    # DTOs de salida
-    │   ├── entity                 # Entidades JPA
-    │   ├── repository             # Repositorios Spring Data
-    │   ├── service                # Interfaces de la lógica de negocio
-    │   └── MainApp.java           # Clase principal de la API
-    ├── src/main/resources/
-    │   └── application.properties # Configuración general
-    ├── src/test/java/alvarompdev/newprojectapi/
-    │   ├── controller             # Pruebas de los controladores REST
-    │   ├── dto                    # Pruebas de los DTOs
-    │   ├── entity                 # Pruebas de las entidades JPA
-    │   ├── repository             # Pruebas de los repositorios Spring Data
-    │   └── service                # Pruebas de la lógica de negocio
-    ├── scripts/
-    │   ├── docker-compose.yml     # Configuración Docker
-    │   └── init_db.sql            # Script de inicialización de la base de datos
-    └── docs/                      # Documentación del proyecto
+NewProject_API/
+├── backend/
+│   └── NewProject-Api/
+│       ├── src/main/java/alvarompdev/newprojectapi/
+│       │   ├── config                 # Elementos de configuración
+│       │   ├── controller             # Controladores REST
+│       │   ├── custom_exceptions      # Excepciones personalizadas
+│       │   ├── dto                    # DTOs de salida
+│       │   ├── entity                 # Entidades JPA
+│       │   ├── repository             # Repositorios Spring Data
+│       │   ├── service                # Interfaces de la lógica de negocio
+│       │   └── MainApp.java           # Clase principal de la API
+│       ├── src/main/resources/
+│       │   └── application.properties # Configuración general
+│       └── src/test/java/alvarompdev/newprojectapi/
+│           ├── controller             # Pruebas de los controladores REST
+│           ├── dto                    # Pruebas de los DTOs
+│           ├── entity                 # Pruebas de las entidades JPA
+│           ├── repository             # Pruebas de los repositorios Spring Data
+│           └── service                # Pruebas de la lógica de negocio
+├── data/
+│   └── postgres/                      # Persistencia de la base de datos PostgreSQL (Docker volume)
+├── scripts/
+│   └── docker-compose.yml             # Configuración Docker
+├── docs/                              # Documentación del proyecto
+└── README.md                          # Documentación principal del repositorio
 ```
 
 ## Requisitos previos
