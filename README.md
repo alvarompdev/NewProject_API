@@ -1,4 +1,4 @@
-# [Nombre del proyecto]
+# [Nombre del proyecto] - Backend
 
 [Nombre del proyecto] es una API RESTful desarrollada con Java y con el framework Spring Boot. Consiste en una API que consulta APIs externas como Open Food Facts (https://world.openfoodfacts.org/), Open Products Facts (https://world.openproductsfacts.org/) y Open Beauty Facts (https://world.openbeautyfacts.org/).
 
