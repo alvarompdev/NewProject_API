@@ -2,28 +2,43 @@ package alvarompdev.newprojectapi.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad JPA que representa un producto
+ * Contiene todos los datos del producto, tanto los básicos como los nutricionales
+ *
+ * @author Álvaro Muñoz Panadero - alvarompdev on GitHub - alvaromp.dev@gmail.com
+ */
 @Entity
-@Table(name = "products")
+@Table(name = "products") // Nombre de la tabla en la base de datos
 public class Product {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Datos del producto
+     */
     @Column(nullable = false, unique = true)
     private String barcode;
 
-    @Column(length = 500)
+    @Column(length = 100)
     private String name;
 
-    @Column(length = 1000)
+    @Column(length = 50)
     private String brand;
 
     @Column(length = 1024)
     private String imageUrl;
 
+    @Column(length = 10)
+    private String quantity;
+
     @Column(length = 2000)
     private String ingredients;
 
-    // Macros por 100g
+    /**
+     * Datos nutricionales del producto
+     */
     private Double energyKcal;
     private Double protein;
     private Double fat;
@@ -33,12 +48,28 @@ public class Product {
     private Double fiber;
     private Double salt;
     private Double sodium;
+    private String nutriScore;
 
-    // ======================
-    // Getters y Setters
-    // ======================
+    private Integer novaGroup;
+    @Column(length = 1000)
+    private String novaGroupDebug;
 
+    private Integer ecoscoreScore;
+    @Column(length = 5)
+    private String ecoscoreGrade;
 
+    @Column(length = 1000)
+    private String additivesTags;
+
+    @Column(length = 1000)
+    private String additivesOriginalTags;
+
+    @Column(length = 1000)
+    private String ingredientsAnalysisTags;
+
+    /*
+     * Getters y Setters
+     */
     public Long getId() {
         return id;
     }
@@ -77,6 +108,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getIngredients() {
@@ -157,6 +196,70 @@ public class Product {
 
     public void setSodium(Double sodium) {
         this.sodium = sodium;
+    }
+
+    public String getNutriScore() {
+        return nutriScore;
+    }
+
+    public void setNutriScore(String nutriScore) {
+        this.nutriScore = nutriScore;
+    }
+
+    public Integer getNovaGroup() {
+        return novaGroup;
+    }
+
+    public void setNovaGroup(Integer novaGroup) {
+        this.novaGroup = novaGroup;
+    }
+
+    public String getNovaGroupDebug() {
+        return novaGroupDebug;
+    }
+
+    public void setNovaGroupDebug(String novaGroupDebug) {
+        this.novaGroupDebug = novaGroupDebug;
+    }
+
+    public Integer getEcoscoreScore() {
+        return ecoscoreScore;
+    }
+
+    public void setEcoscoreScore(Integer ecoscoreScore) {
+        this.ecoscoreScore = ecoscoreScore;
+    }
+
+    public String getEcoscoreGrade() {
+        return ecoscoreGrade;
+    }
+
+    public void setEcoscoreGrade(String ecoscoreGrade) {
+        this.ecoscoreGrade = ecoscoreGrade;
+    }
+
+    public String getAdditivesTags() {
+        return additivesTags;
+    }
+
+    public void setAdditivesTags(String additivesTags) {
+        this.additivesTags = additivesTags;
+    }
+
+    public String getAdditivesOriginalTags() {
+        return additivesOriginalTags;
+    }
+
+    public void setAdditivesOriginalTags(String additivesOriginalTags) {
+        this.additivesOriginalTags = additivesOriginalTags;
+    }
+
+    public String getIngredientsAnalysisTags() {
+        return ingredientsAnalysisTags;
+    }
+
+    public void setIngredientsAnalysisTags(String ingredientsAnalysisTags) {
+        this.ingredientsAnalysisTags = ingredientsAnalysisTags;
     }
 
 }
