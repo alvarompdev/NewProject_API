@@ -55,7 +55,7 @@ public class Product {
     private String novaGroupDebug;
 
     private Integer ecoscoreScore;
-    @Column(length = 5)
+    @Column(length = 100)
     private String ecoscoreGrade;
 
     @Column(length = 1000)
